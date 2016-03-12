@@ -1,0 +1,21 @@
+[submodule "calabash"]
+	path = calabash
+	url = https://github.com/transpect/calabash-frontend.git
+[submodule "framework"]
+	path = framework
+	url = https://github.com/le-tex/oXygenJATSframework_Literatum.git
+[submodule "cascade"]
+	path = cascade
+	url = https://github.com/transpect/cascade.git
+[submodule "htmlreports"]
+	path = htmlreports
+	url = https://github.com/transpect/htmlreports.git
+[submodule "schematron"]
+	path = schematron
+	url = https://github.com/transpect/schematron.git
+[submodule "xslt-util"]
+	path = xslt-util
+	url = https://github.com/transpect/xslt-util.git
+[submodule "xproc-util"]
+	path = xproc-util
+	url = https://github.com/transpect/xproc-util.git

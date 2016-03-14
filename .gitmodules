@@ -19,3 +19,9 @@
 [submodule "xproc-util"]
 	path = xproc-util
 	url = https://github.com/transpect/xproc-util.git
+[submodule "jats2html"]
+	path = jats2html
+	url = https://github.com/transpect/jats2html.git
+[submodule "hub2html"]
+	path = hub2html
+	url = https://github.com/transpect/hub2html.git

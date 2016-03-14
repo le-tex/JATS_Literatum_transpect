@@ -9,5 +9,7 @@
   <nextCatalog catalog="../htmlreports/xmlcatalog/catalog.xml"/>
   <nextCatalog catalog="../xslt-util/xmlcatalog/catalog.xml"/>
   <nextCatalog catalog="../framework/xmlcatalog/catalog.xml"/>
+  <nextCatalog catalog="../jats2html/xmlcatalog/catalog.xml"/>
+  <nextCatalog catalog="../hub2html/xmlcatalog/catalog.xml"/>
 
 </catalog>

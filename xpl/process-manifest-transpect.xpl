@@ -17,7 +17,9 @@
 
   <p:documentation>This is a front-end for transpect to process-manifest.xpl. See the corresponding documentation there.</p:documentation>
 
-  <p:input port="source" primary="true"/>
+  <p:input port="source" primary="true">
+    <p:documentation>A manifest file. See framework/build-issue/process-manifest.xpl</p:documentation>
+  </p:input>
 
   <p:input port="schematron">
     <p:document href="http://hogrefe.com/JATS/schematron/literatum_package.sch"/>

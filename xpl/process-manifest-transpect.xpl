@@ -62,11 +62,12 @@
   
   <p:viewport match="c:file/article" name="render-articles">
     <p:output port="result" primary="true"/>
+    <p:variable name="pos" select="'t'"/>
     <tr:insert-srcpaths/>
     <p:documentation>Unfortunately, we cannot use the packaged jats-html.xsl because the stylesheet is not
     designed for custom attributes. It will be too difficult not to discard srcpath attributes if we use
     this stylesheet.</p:documentation>
-    <jats:html srcpaths="yes">
+    <jats:html srcpaths="yes" fallback-xsl="http://this.transpect.io/xsl/jats2html-custom.xsl">
       <p:input port="paths">
         <p:empty/>
       </p:input>

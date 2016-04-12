@@ -48,7 +48,8 @@
   <p:import href="http://transpect.io/xproc-util/insert-srcpaths/xpl/insert-srcpaths.xpl"/>
   <p:import href="http://transpect.io/jats2html/xpl/jats2html.xpl"/>
   <p:import href="http://transpect.io/htmlreports/xpl/validate-with-rng.xpl"/>
-  <p:import href="http://transpect.io/htmlreports/xpl/patch-svrl.xpl"/>  
+  <p:import href="http://transpect.io/htmlreports/xpl/patch-svrl.xpl"/>
+  
   <jats:process-manifest name="process-manifest" transpect="true">
     <p:input port="schematron">
       <p:pipe port="schematron" step="process-manifest-transpect"/>
@@ -65,34 +66,23 @@
     <p:documentation>Unfortunately, we cannot use the packaged jats-html.xsl because the stylesheet is not
     designed for custom attributes. It will be too difficult not to discard srcpath attributes if we use
     this stylesheet.</p:documentation>
-    <!--<p:xslt>
-      <p:input port="parameters">
-        <p:empty/>
-      </p:input>
-      <p:input port="stylesheet">
-        <p:inline>
-          <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
-            <xsl:import href="http://hogrefe.com/JATS/jats-preview-xslt/xslt/main/jats-html.xsl"/>
-            <xsl:template match="@srcpath" mode="#all">
-              <xsl:copy/>
-            </xsl:template>
-          </xsl:stylesheet>
-        </p:inline>
-      </p:input>
-      <p:with-param name="css" select="'http://hogrefe.com/JATS/jats-preview-xslt/jats-preview.css'"/>
-    </p:xslt>
-    <p:namespace-rename from="" to="http://www.w3.org/1999/xhtml" apply-to="elements"/>
-    -->
     <jats:html srcpaths="yes">
       <p:input port="paths">
         <p:empty/>
       </p:input>
+      <p:with-option name="debug" select="$debug"/>
+      <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
     </jats:html>
     <p:filter select="/html:html/html:body"/>
     <p:rename match="/html:body" new-name="div" new-namespace="http://www.w3.org/1999/xhtml"/>
     <p:add-attribute match="/html:div" attribute-name="class" attribute-value="jats-article"/>
   </p:viewport>
   
+  <tr:store-debug pipeline-step="render-package-input">
+    <p:with-option name="active" select="$debug"/>
+    <p:with-option name="base-uri" select="$debug-dir-uri"/>
+  </tr:store-debug> 
+
   <p:xslt name="render">
     <p:input port="stylesheet">
       <p:pipe port="html-rendering-xsl" step="process-manifest-transpect"/>
@@ -100,6 +90,11 @@
     <p:input port="parameters"><p:empty/></p:input>
   </p:xslt>
   
+  <tr:store-debug pipeline-step="render-package-output">
+    <p:with-option name="active" select="$debug"/>
+    <p:with-option name="base-uri" select="$debug-dir-uri"/>
+  </tr:store-debug> 
+
   <p:sink/>
   
   <p:for-each name="rng-article">
@@ -107,7 +102,7 @@
       <p:pipe port="validation-input" step="process-manifest"/>
     </p:iteration-source>
     <p:output port="report" primary="true">
-      <p:pipe port="report" step="rng-article1"/>
+      <p:pipe port="result" step="rename-family"/>
     </p:output>
     <p:delete match="/*/@xml:base"/>
     <tr:validate-with-rng-svrl name="rng-article1" debug="yes">
@@ -119,6 +114,14 @@
       </p:input>
     </tr:validate-with-rng-svrl>
     <p:sink/>
+    <p:add-attribute attribute-name="tr:rule-family" match="/*" name="rename-family">
+      <p:with-option name="attribute-value" select="replace(base-uri(/*), '^.+/', 'article schema ')">
+        <p:pipe port="current" step="rng-article"/>
+      </p:with-option>
+      <p:input port="source">
+        <p:pipe port="report" step="rng-article1"/>
+      </p:input>
+    </p:add-attribute>
   </p:for-each>
   
   <p:sink/>

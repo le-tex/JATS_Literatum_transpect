@@ -66,6 +66,7 @@ ifeq ($(suffix $(IN_FILE)),.zip)
 	mkdir -p $(OUT_DIR)/tmp
 	unzip -d $(OUT_DIR)/tmp $(IN_FILE_COPY)
 	$(MAKE) process_manifest $(IN_FILE)=$(OUT_DIR)/tmp/manifest.xml
+	rm $(IN_FILE_COPY) 
 	cp $(OUT_DIR)/tmp/*zip $(OUT_DIR)
 else
 	@echo "Please supply a zip file with manifest.xml in its root directory." | tee $(DEBUG_DIR)/status/no_zip.txt
